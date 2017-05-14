@@ -26,8 +26,7 @@ public Boolean sendMail(String email)
 - 安装redis
 - 运行io.liang.jsidekiq.Application
 - dashboard:  http://localhost:8080/jsidekiq/home/index
-- 浏览器输入方法： http://127.0.0.1:8080/jsidekiq/dead?name=zyl
-	- 查看任务运行情况
+- 异步方法模拟： http://127.0.0.1:8080/jsidekiq/dead?name=zyl
 - 账户密码：admin / admin
 
 

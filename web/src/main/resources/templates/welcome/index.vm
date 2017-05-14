@@ -106,7 +106,7 @@
             </a>
         </p>
         <p>
-            报表：<a href="http://echarts.baidu.com" target="_blank"> echarts ！</a>
+            图表：<a href="http://echarts.baidu.com" target="_blank"> echarts ！</a>
         </p>
         <p>
             系统实现参考：<a href="https://github.com/mperham/sidekiq" target="_blank"> sidekiq ！</a>

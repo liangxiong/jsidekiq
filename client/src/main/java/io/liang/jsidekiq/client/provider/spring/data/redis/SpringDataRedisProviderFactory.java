@@ -17,7 +17,7 @@ public class SpringDataRedisProviderFactory extends ProviderFactory {
 
         client.setRedisTemplate(SpringUtil.getBean(StringRedisTemplate.class));
         client.setConfig(Config.getInstance());
-//        client.setStringRedisTemplate(SpringUtil.getBean(StringRedisTemplate.class));
+
 
         return client;
     }

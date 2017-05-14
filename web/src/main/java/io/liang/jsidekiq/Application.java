@@ -14,7 +14,6 @@ import java.util.List;
  * Created by zhiping on 17/5/3.
  */
 @SpringBootApplication
-//@EnableWebMvc
 public class Application {
     public static void main(String[] args)throws Exception {
         ApplicationContext applicationContext =

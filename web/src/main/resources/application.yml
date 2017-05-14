@@ -53,4 +53,4 @@ logging:
 
 
 jsidekiq:
-  configUrl: http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&minIdle=1&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=zyl&adminPassword=admin1
+  configUrl: http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&consumerQueue=queue1,queue2&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=admin&adminPassword=admin

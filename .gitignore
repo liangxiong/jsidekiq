@@ -9,7 +9,6 @@
 bin
 target
 logs
-hsf.configuration
 .idea
 *.iml
 antx.properties

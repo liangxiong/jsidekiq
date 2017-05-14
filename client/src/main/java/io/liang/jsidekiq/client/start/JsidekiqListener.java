@@ -26,11 +26,6 @@ public class JsidekiqListener implements ServletContextListener {
         ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         SpringUtil.setApplicationContext(applicationContext);
 
-//        String[] names = applicationContext.getBeanDefinitionNames();
-//
-//        for(int i=0;i<names.length;i++) {
-//            System.out.println(names[i]);
-//        }
 
         Start.start(configUrl);
     }

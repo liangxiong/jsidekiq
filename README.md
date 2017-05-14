@@ -51,10 +51,12 @@ public Boolean sendMail(String email)
 		-  web.xml 配置：io.liang.jsidekiq.client.start.JsidekiqListener 注入参数：configUrl
 
 	-  jsidekiq:configUrl 参数说明：
-		 ```
-   configUrl: http://jsidekiq?nameSpace=http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&consumerQueue=queue1,queue2&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=zyl&adminPassword=admin
-  ```
-	- 变量解释：
+
+	```
+     configUrl: http://jsidekiq?nameSpace=http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&consumerQueue=queue1,queue2&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=zyl&adminPassword=admin
+    ```
+
+	- 参数解释：
 		- nameSpace:： 命名空间，用于多个后台任务的隔离
 		- provider：默认：springDataRedis，数据提供者，暂时只支持spring data redis
 		- consumerQueue： 监控的队列名称，多个逗号风格，如果为空，表示监控所有队列
@@ -64,13 +66,14 @@ public Boolean sendMail(String email)
 		- admin：true | false 是否是dashboard，是表示不运行消费者线程
 		- adminName： dashboard 的账户
 		- adminPassword：dashboard 的密码
+
 	- redis 信息配置 最终需要在spring 中提供一个 StringRedisTemplate
 
-- 同步方法设置标签改为异步方法：
+- 同步方法设置标签标识为异步方法：
 	在方法上增加标签：@JSidekiqLabel(retry = 3,description = "订单监控",queue = "tradeMonit",at=1800000)
 
 
-#### 技术实现：
+#### 时序图：
 
 ```sequence
 业务方 -> jsidekiq proxy : 调用业务代理类，aop 拦截
@@ -98,7 +101,7 @@ jsidekiq -> 业务方 : ok
 #### 改进：
 - 耗时任务，在重启过程后 能够不丢失任务，进行重新启动
 
-####资料：
+#### 资料：
 - 后台  X-admin :  http://x.xuebingsi.com
 - 图表 echarts ： http://echarts.baidu.com
 - 实现参考 sidekiq： https://github.com/mperham/sidekiq

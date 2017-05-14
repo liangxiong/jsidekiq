@@ -1,0 +1,176 @@
+#parse("common/common.vm")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+       $!{queue} 队列信息
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="${stCtx}/css/x-admin.css" media="all">
+</head>
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+              <a><cite>首页</cite></a>
+              <a><cite>统计信息</cite></a>
+              <a><cite>队列信息</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <form class="layui-form x-center" id="queryForm" action="${ctx}/detail/schedule/schedule" method="post" style="width:800px">
+        <div class="layui-form-pane" style="margin-top: 15px;">
+            <div class="layui-form-item">
+                <div class="layui-input-inline" style="width:80px">
+                    <input type="hidden" name="name" value="$!{name}" />
+                    <input type="hidden" id="pageNum" name="pageNum" value="$!{page.pageNum}" />
+                    <input type="hidden" id="numPerPage" name="numPerPage" value="$!{page.numPerPage}" />
+
+                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <xblock>
+        #*<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn" onclick="question_add('添加问题','question-add.html','600','500')"><i class="layui-icon">&#xe608;</i>添加</button>*#
+        <span class="x-right" style="line-height:40px">共有数据：$!{page.totalRow} 条</span>
+    </xblock>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th width="10%">
+                类名-方法名
+            </th>
+            <th width="10%">
+                参数
+            </th>
+            <th width="15%">
+                时间
+            </th>
+            <th width="60%" >
+                失败原因
+            </th>
+
+            <th width="5%">
+                操作
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        #foreach( $cell in $page.rows )
+        <tr>
+            <td title="$!{cell.jid}"  style="word-wrap:break-word;word-break:break-all;">
+                jid: $!{cell.jid}
+                <br />
+                运行类信息: $!{cell.className} ：$!{cell.methodName}
+            </td>
+            <td style="word-wrap:break-word;word-break:break-all;">
+                $!{cell.paramTypes} ： $!{cell.params}
+            </td>
+            <td style="word-wrap:break-word;word-break:break-all;">
+                录入时间: $!{cell.createdAt} <br />
+                #if($cell.at)
+                    延迟时间: $!{cell.at} <br />
+                #end
+                #if($cell.retriedAt)
+                   重试时间: $!{cell.retriedAt} <br />
+                   重试次数: $!{cell.retry}
+                #end
+                #if($cell.failedAt)
+                失败时间: $!{cell.failedAt} <br />
+                #end
+            </td>
+            <td >
+                $!{cell.errorMessage}
+            </td>
+            <td class="td-manage">
+                <a title="重试" href="javascript:;" onclick="retryTask('$!{name}_$!{cell.nextRunTime}_$!{cell.jid}')"
+                   class="ml-5" style="text-decoration:none">
+                    <i class="layui-icon">&#x1002;</i>
+                </a>
+                <a title="删除" href="javascript:;" onclick="delTask('$!{name}_$!{cell.nextRunTime}_$!{cell.jid}')"
+                   style="text-decoration:none">
+                    <i class="layui-icon">&#xe640;</i>
+                </a>
+            </td>
+        </tr>
+        #end
+        </tbody>
+    </table>
+    <div id="page"></div>
+</div>
+<script src="${stCtx}/lib/layui/layui.js" charset="utf-8"></script>
+<script src="${stCtx}/js/x-layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['laydate','element','laypage','layer'], function(){
+        $ = layui.jquery;//jquery
+        laypage = layui.laypage;//分页
+
+        //以上模块根据需要引入
+        laypage({
+            cont: 'page'
+            ,pages: $!{page.totalPage}
+            ,curr: $!{page.pageNum} + 1
+            ,prev: '<em><</em>'
+            ,next: '<em>></em>'
+            ,jump: function(obj, first) {
+                if (!first) {
+                    var curr = obj.curr - 1;
+
+                    $("#pageNum").val(curr);
+                    $("#queryForm").submit();
+                }
+            }
+        });
+    });
+
+
+    /*删除*/
+    function delTask(key){
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({url:"${ctx}/detail/schedule/delTask",
+                data:{"key": key},
+                dataType:"json",
+                error: function(){
+                    layer.msg('删除失败，请稍后重试!',{icon:1,time:1000});
+                },
+                success: function(data){
+                    if(data.status == 0) {
+                        $("#queryForm").submit();
+                    }
+                }
+            });
+
+        });
+    }
+
+    /*重试*/
+    function retryTask(key){
+        layer.confirm('确认要立即加入运行队列吗？',function(index){
+            $.ajax({url:"${ctx}/detail/schedule/retryTask",
+                data:{"key": key},
+                dataType:"json",
+                error: function(){
+                    layer.msg('加入运行队列失败，请稍后重试!',{icon:1,time:1000});
+                },
+                success: function(data){
+                    if(data.status == 0) {
+                        $("#queryForm").submit();
+                    }
+                }
+            });
+
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+server:
+  context-path: /jsidekiq
+
+
+spring:
+  redis:
+    host: 127.0.0.1
+    database: 1
+    password:
+        port: 6379
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: -1
+
+  devtools:
+      restart:
+        exclude: static/**,public/**,templates/**
+
+  velocity:
+    allow-request-override: true
+    allow-session-override: true
+    enabled: true
+    expose-request-attributes: true
+    expose-session-attributes: true
+    toolbox-config-location: toolbox.xml
+    suffix: .vm
+
+
+#      charset: UTF-8
+#      content-type: text/html
+#      enabled: true
+#
+#      properties:
+#        input:
+#          encoding: UTF-8
+#          output:
+#            encoding: UTF-8
+
+  #  resourceLoaderPath: classpath:/templates/
+  #  toolbox-config-location: /WEB-INF/toolbox.xml
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web: WARN
+    io:
+      liang: DEBUG
+    root: WARN
+
+
+jsidekiq:
+  configUrl: http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&minIdle=1&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=zyl&adminPassword=admin1

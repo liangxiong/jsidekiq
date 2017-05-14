@@ -1,0 +1,2 @@
+#set($ctx="${request.contextPath}")
+#set($stCtx="${request.contextPath}")

@@ -1,0 +1,16 @@
+.DS_Store
+*.classpath
+*.project
+*.log
+*.log.*
+*.class
+.settings
+
+bin
+target
+logs
+hsf.configuration
+.idea
+*.iml
+antx.properties
+

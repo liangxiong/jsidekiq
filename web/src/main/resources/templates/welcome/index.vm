@@ -1,0 +1,119 @@
+#parse("common/common.vm")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        欢迎页面
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="${stCtx}/css/x-admin.css" media="all">
+</head>
+<body>
+<div class="x-body">
+    <blockquote class="layui-elem-quote">
+        作者邮箱：liang3307@163.com
+    </blockquote>
+
+    <fieldset class="layui-elem-field layui-field-title site-title">
+        <legend><a name="default">信息统计</a></legend>
+    </fieldset>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th colspan="2" scope="col">运行时统计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th width="30%">已处理</th>
+            <td> $!{stat.processedSize} </td>
+        </tr>
+        <tr>
+            <td>已失败</td>
+            <td>$!{stat.failedSize}</td>
+        </tr>
+        <tr>
+            <td>执行中</td>
+            <td>$!{stat.processesSize}</td>
+        </tr>
+        <tr>
+            <td>已进行队列</td>
+            <td>$!{stat.enqueuedSize}</td>
+        </tr>
+        <tr>
+            <td>重试</td>
+            <td>$!{stat.retrySize}</td>
+        </tr>
+        <tr>
+            <td>已计划</td>
+            <td>$!{stat.scheduledSize}</td>
+        </tr>
+        <tr>
+            <td>已死亡</td>
+            <td>$!{stat.deadSize}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th colspan="2" scope="col">Redis信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th width="30%">Redis版本</th>
+            <td>$!{redisInfo.redisVersion}</td>
+        </tr>
+        <tr>
+            <td>Redis 上线天数(天数)</td>
+            <td>$!{redisInfo.uptimeInDays}</td>
+        </tr>
+        <tr>
+            <td>Redis 连接数</td>
+            <td>$!{redisInfo.connectedClients}</td>
+        </tr>
+        <tr>
+            <td>Redis 内存占用 </td>
+            <td>$!{redisInfo.usedMemoryHuman}</td>
+        </tr>
+        <tr>
+            <td>Redis 内存占用峰值 </td>
+            <td>$!{redisInfo.usedMemoryPeakHuman}</td>
+        </tr>
+        <tr>
+            <td>Redis 命名空间 </td>
+            <td>$!{config.nameSpace}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="layui-footer footer footer-demo">
+    <div class="layui-main">
+        <p>
+           本后台模板使用：<a href="http://x.xuebingsi.com" target="_blank"> X-admin ！</a>
+        </p>
+        <p>
+            <a href="http://x.xuebingsi.com" target="_blank">
+                报表：<a href="http://echarts.baidu.com" target="_blank"> echarts ！</a>
+            </a>
+        </p>
+        <p>
+            报表：<a href="http://echarts.baidu.com" target="_blank"> echarts ！</a>
+        </p>
+        <p>
+            系统实现参考：<a href="https://github.com/mperham/sidekiq" target="_blank"> sidekiq ！</a>
+        </p>
+    </div>
+</div>
+<script src="${stCtx}/lib/layui/layui.js" charset="utf-8"></script>
+<script src="${stCtx}/js/x-admin.js"></script>
+</body>
+</html>

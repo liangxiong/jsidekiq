@@ -1,0 +1,106 @@
+#parse("common/common.vm")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+       进程信息
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="${stCtx}/css/x-admin.css" media="all">
+</head>
+<body>
+<form class="layui-form x-center" id="queryForm" action="/jsidekiq/stat/processed/index" style="width:800px">
+    <div class="layui-form-pane" style="margin-top: 15px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width:60px">日期</label>
+            <div class="layui-input-inline" style="width:120px;text-align: left">
+                <select name="days" id="days" >
+                    <option value="7" #if($!days ==  '7')selected #end >一周</option>
+                    <option value="31" #if($!days ==  '31')selected #end >一个月</option>
+                    <option value="93" #if($!days ==  '93')selected #end >三个月</option>
+                    <option value="186" #if($!days ==  '186')selected #end >六个月</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width:80px">
+                <button class="layui-btn"  lay-submit="" lay-filter="add"><i class="layui-icon">&#xe615;</i>查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="x-body">
+    <div id="main" style="width: 100%;height:400px;"></div>
+</div>
+<script src="${stCtx}/lib/layui/layui.js" charset="utf-8"></script>
+<script src="${stCtx}/js/x-layui.js" charset="utf-8"></script>
+
+<script src="${stCtx}/js/echarts.js" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use(['element','layer','form'], function() {
+        $ = layui.jquery;//jquery
+        lement = layui.element();//面包导航
+        layer = layui.layer;//弹出层
+        form = layui.form();
+    });
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '每日运行数统计'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['失败数','成功数']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: $!{dayList}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name:'失败数',
+                type:'line',
+                stack: '总量',
+                data: $!{failList}
+            },
+            {
+                name:'已处理',
+                type:'line',
+                stack: '总量',
+                data:$!{processedList}
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

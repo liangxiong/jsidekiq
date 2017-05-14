@@ -1,0 +1,114 @@
+#parse("common/common.vm")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+       进程信息
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="${stCtx}/css/x-admin.css" media="all">
+</head>
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+              <a><cite>首页</cite></a>
+              <a><cite>统计信息</cite></a>
+              <a><cite>队列信息</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <form class="layui-form x-center" id="queryForm" action="${ctx}/detail/schedule/index" style="width:800px">
+        <div class="layui-form-pane" style="margin-top: 15px;">
+            <div class="layui-form-item">
+                <div class="layui-input-inline" style="width:80px">
+                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <xblock>
+        #*<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn" onclick="question_add('添加问题','question-add.html','600','500')"><i class="layui-icon">&#xe608;</i>添加</button>*#
+        <span class="x-right" style="line-height:40px">共有数据：$!{rows.size()} 条</span>
+    </xblock>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>
+                名称
+            </th>
+            <th>
+                数量
+            </th>
+            <th width="10%">
+                操作
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        #foreach( $cell in $rows )
+        <tr>
+            <td>
+                <a href="${ctx}/detail/schedule/schedule?name=$!{cell.queue}" >
+                    $!{cell.queue}
+                </a>
+            </td>
+            <td>
+                $!{cell.quantity}
+            </td>
+           <td class="td-manage">
+               <a title="编辑" href="${ctx}/detail/schedule/schedule?name=$!{cell.queue}"
+                  class="ml-5" style="text-decoration:none">
+                   <i class="layui-icon">&#xe642;</i>
+               </a>
+               &nbsp;&nbsp;
+                <a title="删除" href="javascript:;" onclick="delSet(this,'$!{cell.queue}')"
+                   style="text-decoration:none">
+                    <i class="layui-icon">&#xe640;</i>
+                </a>
+            </td>
+        </tr>
+        #end
+        </tbody>
+    </table>
+</div>
+
+<script src="${stCtx}/lib/layui/layui.js" charset="utf-8"></script>
+<script src="${stCtx}/js/x-layui.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['layer'], function() {
+        $ = layui.jquery;//jquery
+
+        layer = layui.layer;//弹出层
+    });
+    /*删除*/
+    function delSet(obj,name){
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({url:"${ctx}/detail/schedule/delSet",
+                data:{"name": name},
+                dataType:"json",
+                error: function(){
+                    layer.msg('删除失败，请稍后重试!',{icon:1,time:1000});
+                },
+                success: function(data){
+                    if(data.status == 0) {
+                        $("#queryForm").submit();
+                    }
+                }
+            });
+
+        });
+    }
+</script>
+
+</body>
+</html>

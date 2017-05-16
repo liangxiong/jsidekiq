@@ -1,15 +1,16 @@
 # jsidekiq
 java 版后台任务，参考：sidekiq
 
+
 #### 使用场景：
-- 异步队列
+- 同步方法改为异步方法
 	用例：用户注册异步发送邮件
 ```
 @JSidekiqLabel(retry = 3,description = "异步发送注册邮件",queue = "sendMail")
 public Boolean sendMail(String email)
 ```
 
-- 延迟队列
+- 同步方法改为延迟方法
 	用例： 用户下单，30分钟后不付款，订单无效，库存恢复
 ```
 	@JSidekiqLabel(retry = 3,description = "订单监控",queue = "tradeMonit",at=1800000)
@@ -44,7 +45,6 @@ public Boolean sendMail(String email)
 #### 正式使用
 - 下载项目maven 编译
 - 生成的client/target/jsidekiq-client-1.0-SNAPSHOT.jar 放入你的项目
-
 
 - spring boot 参考：application.yml
     - maven:
@@ -103,7 +103,6 @@ public Boolean sendMail(String email)
     </bean>
     
     <aop:aspectj-autoproxy proxy-target-class="true" />
-    
     ```
         
        
@@ -130,9 +129,16 @@ public Boolean sendMail(String email)
 
 - 同步方法设置标签标识为异步方法：
 	在方法上增加标签：@JSidekiqLabel(retry = 3,description = "订单监控",queue = "tradeMonit",at=1800000)
-
+	标签说明：
+	- retry: 方法出错，重试的次数
+	- description： 对方法的描述
+	- queue：放入的队列名称，空表示放入默认队列：DEFAULT
+	- at：延迟的毫秒数，1800000：表示30分钟
+	
 
 #### 时序图：
+
+<img src="//github.com/liangxiong/jsidekiq/tree/master/web/src/main/resources/static/images/report/sequence.png" > 
 
 
 ```sequence
@@ -146,16 +152,6 @@ redis -> jsidekiq proxy : 业务的meta信息
 jsidekiq proxy -> 业务方 : 调用real的业务方法
 ```
 
-
-- 延迟队列
-	使用redies 的 有序队列
-
-```sequence
-业务方 -> jsidekiq : 调用方法，aop拦截
-jsidekiq -> redis : zadd 类，方法，参数
-redis -> jsidekiq : ok
-jsidekiq -> 业务方 : ok
-```
 
 
 #### 改进：

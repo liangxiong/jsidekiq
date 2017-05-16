@@ -19,7 +19,7 @@ import java.util.Date;
 
 /**
  * sidekiq 拦截器
- * Created by zhiping on 17/3/5.
+ * Created by zhangyouliang on 17/3/5.
  */
 @Aspect
 @Component

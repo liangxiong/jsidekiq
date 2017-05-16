@@ -5,20 +5,16 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.List;
 
 /**
- * Created by zhiping on 17/5/1.
+ * Created by zhangyouliang on 17/5/1.
  */
 public class Page<T> {
     private Integer numPerPage = 20;
-
-    //默认asc 升序
-//    private Sort.Direction sort_way;
-//    private String sort_field;
 
     private Integer pageNum = 0;
 
     private List<T> rows;				// list result of this page
 
-    private long totalRow;				// total row
+    private Long totalRow;				// total row
 
     private Integer totalPage = 0;
 
@@ -43,11 +39,11 @@ public class Page<T> {
         return rows;
     }
 
-    public void setRows(List rows) {
+    public void setRows(List<T> rows) {
         this.rows = rows;
     }
 
-    public long getTotalRow() {
+    public Long getTotalRow() {
         return totalRow;
     }
 

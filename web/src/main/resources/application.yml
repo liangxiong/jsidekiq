@@ -5,7 +5,7 @@ server:
 spring:
   redis:
     host: 127.0.0.1
-    database: 1
+    database: 2
     password:
         port: 6379
         pool:
@@ -28,20 +28,6 @@ spring:
     suffix: .vm
 
 
-#      charset: UTF-8
-#      content-type: text/html
-#      enabled: true
-#
-#      properties:
-#        input:
-#          encoding: UTF-8
-#          output:
-#            encoding: UTF-8
-
-  #  resourceLoaderPath: classpath:/templates/
-  #  toolbox-config-location: /WEB-INF/toolbox.xml
-
-
 logging:
   level:
     org:
@@ -53,4 +39,4 @@ logging:
 
 
 jsidekiq:
-  configUrl: http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&consumerQueue=queue1,queue2&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=admin&adminPassword=admin
+  configUrl: http://jsidekiq?nameSpace=io::liang::jsidekiq&provider=springDataRedis&consumerQueue=demo&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=false&adminName=admin&adminPassword=admin

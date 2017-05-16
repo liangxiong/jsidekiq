@@ -11,7 +11,7 @@ import io.liang.jsidekiq.client.consumer.thread.ConsumerThreadPool;
 import java.util.concurrent.*;
 
 /**
- * Created by zhiping on 17/4/16.
+ * Created by zhangyouliang on 17/4/16.
  */
 public class ConsumerMain {
     private Logger log = LoggerFactory.getLogger(this.getClass());

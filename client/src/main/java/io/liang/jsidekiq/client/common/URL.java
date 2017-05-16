@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * 参考dubbo
- * Created by zhiping on 17/4/5.
+ * Created by zhangyouliang on 17/4/5.
  */
 public class URL implements Serializable {
     private static final long serialVersionUID = 7832616742616332703L;

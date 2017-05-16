@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Created by zhiping on 17/4/11.
+ * Created by zhangyouliang on 17/4/11.
  */
 public class SpringUtil {
     private static ApplicationContext applicationContext;

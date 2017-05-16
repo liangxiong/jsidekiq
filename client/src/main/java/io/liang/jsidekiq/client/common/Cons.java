@@ -3,7 +3,7 @@ package io.liang.jsidekiq.client.common;
 import java.util.regex.Pattern;
 
 /**
- * Created by zhiping on 17/4/5.
+ * Created by zhangyouliang on 17/4/5.
  */
 public class Cons {
     public static final Long ZEROL = 0L;

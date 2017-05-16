@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by zhiping on 17/4/16.
+ * Created by zhangyouliang on 17/4/16.
  */
 public class ConsumerThread extends Template implements Runnable {
 

@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by zhiping on 17/4/5.
+ * Created by zhangyouliang on 17/4/5.
  */
 public class StringUtils {
     protected static Logger log = LoggerFactory.getLogger(StringUtils.class);

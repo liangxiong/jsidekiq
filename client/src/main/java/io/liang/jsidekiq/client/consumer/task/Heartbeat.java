@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by zhiping on 17/4/22.
+ * Created by zhangyouliang on 17/4/22.
  */
 public class Heartbeat {
     private Logger log = LoggerFactory.getLogger(this.getClass());

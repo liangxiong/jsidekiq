@@ -1,6 +1,7 @@
 package io.liang.jsidekiq.client.provider;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.liang.jsidekiq.client.pojo.stat.RedisInfo;
 import io.liang.jsidekiq.client.pojo.Page;
 import io.liang.jsidekiq.client.pojo.Process;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by zhiping on 17/3/26.
+ * Created by zhangyouliang on 17/3/26.
  */
 public interface Provider {
     //增加任务
@@ -37,10 +38,10 @@ public interface Provider {
     void heartbeatProcess(String identity,int busy, Process process);
 
     //有序队列分页
-    Set<String> paginatorByZset(String queueName,Page page);
+    Set<String> paginatorByZset(String queueName,Page<JSONObject> page);
 
     //队列分页
-    List<String> paginatorByList(String queueName,Page page);
+    List<String> paginatorByList(String queueName,Page<JSONObject> page);
 
     //延迟任务的长度
     Long scheduleSize(String name);
@@ -87,6 +88,4 @@ public interface Provider {
 
     //进程统计
     List<ProcessStat> getProcessStatList();
-
-    void test();
 }

@@ -2,7 +2,7 @@ package io.liang.jsidekiq.client.aop;
 
 /**
  * jsidekiq 配置信息
- * Created by zhiping on 17/3/5.
+ * Created by zhangyouliang on 17/3/5.
  */
 public class JSidekiqRole {
     //默认 true：表示工作线程

@@ -7,7 +7,7 @@ import io.liang.jsidekiq.client.provider.Provider;
 import io.liang.jsidekiq.client.provider.factory.ProviderFactory;
 
 /**
- * Created by zhiping on 17/5/1.
+ * Created by zhangyouliang on 17/5/1.
  */
 public class Start {
 

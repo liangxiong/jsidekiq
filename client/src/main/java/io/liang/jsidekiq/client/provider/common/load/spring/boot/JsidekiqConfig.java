@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * spring boot 的 jsidekiq加载
- * Created by zhiping on 17/4/9.
+ * Created by zhangyouliang on 17/4/9.
  */
 @Component
 public class JsidekiqConfig {

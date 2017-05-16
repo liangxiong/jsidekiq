@@ -2,7 +2,7 @@ package io.liang.jsidekiq.client.pojo.stat;
 
 /**
  * 队列的统计
- * Created by zhiping on 17/4/23.
+ * Created by zhangyouliang on 17/4/23.
  */
 public class ProcessStat {
 

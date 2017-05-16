@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 /**
- * Created by zhiping on 17/4/16.
+ * Created by zhangyouliang on 17/4/16.
  */
 public abstract class Template {
     protected Logger log = LoggerFactory.getLogger(this.getClass());

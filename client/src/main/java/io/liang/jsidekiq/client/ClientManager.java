@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by zhiping on 17/4/9.
+ * Created by zhangyouliang on 17/4/9.
  */
 public class ClientManager {
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -459,14 +459,6 @@ public class ClientManager {
         }
         return element;
     }
-
-    public void test(){
-        provider.test();
-    }
-
-
-
-
 
     //heartbeat进程信息
     public void heartbeatProcess(String identity) {

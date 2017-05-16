@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by zhiping on 17/4/13.
+ * Created by zhangyouliang on 17/4/13.
  */
 public class Config {
     private  String DEFAULT_NAME_SPACE = "JSIDEKIQ::QUEUE";//default JSIDEKIQ::QUEUE

@@ -92,7 +92,11 @@
             <version>2.4</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
+
+
+    <build>
+        <finalName>jsidekiq-${project.artifactId}-${project.version}</finalName>
+    </build>
 
 </project>

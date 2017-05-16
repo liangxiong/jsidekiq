@@ -18,7 +18,7 @@ import sun.misc.BASE64Decoder;
 
 
 /**
- * Created by zhiping on 17/5/14.
+ * Created by zhangyouliang on 17/5/14.
  */
 public class HTTPBasicAuthorizeAttribute implements Filter {
 

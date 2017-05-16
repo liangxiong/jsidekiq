@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 延迟任务
- * Created by zhiping on 17/4/16.
+ * Created by zhangyouliang on 17/4/16.
  */
 public class ScheduleMain {
     private Logger log = LoggerFactory.getLogger(this.getClass());

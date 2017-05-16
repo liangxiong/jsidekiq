@@ -5,7 +5,7 @@ import io.liang.jsidekiq.client.provider.Provider;
 import io.liang.jsidekiq.client.provider.spring.data.redis.SpringDataRedisProviderFactory;
 
 /**
- * Created by zhiping on 17/4/9.
+ * Created by zhangyouliang on 17/4/9.
  */
 public abstract class ProviderFactory {
     public abstract Provider getProvider();

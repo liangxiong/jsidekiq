@@ -16,11 +16,12 @@ import java.io.IOException;
  * Created by zhangyouliang
  */
 @Controller
-@RequestMapping("/home")
+@RequestMapping("")
 public class HomeController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("index")
+
+    @RequestMapping("")
     private ModelAndView index(){
         ModelAndView mv = new ModelAndView("/index");
         return mv;

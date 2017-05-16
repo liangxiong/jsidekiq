@@ -1,5 +1,6 @@
 package io.liang.jsidekiq.client.start;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Created by zhiping on 17/4/11.
+ * Created by zhangyouliang on 17/4/11.
  */
 @Component
 public class JsidekiqListener implements ServletContextListener {
@@ -23,11 +24,15 @@ public class JsidekiqListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
+
         ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         SpringUtil.setApplicationContext(applicationContext);
 
+        String str = context.getInitParameter("jsidekiq.configUrl");
+        str = StringUtils.isBlank(str) ? configUrl : str;
 
-        Start.start(configUrl);
+        Start.start(str);
+
     }
 
     @Override

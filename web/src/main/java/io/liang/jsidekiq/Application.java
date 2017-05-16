@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zhiping on 17/5/3.
+ * Created by zhangyouliang on 17/5/3.
  */
 @SpringBootApplication
 public class Application {
     public static void main(String[] args)throws Exception {
         ApplicationContext applicationContext =
                 SpringApplication.run(Application.class, args);
-
     }
 
     @Bean

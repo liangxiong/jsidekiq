@@ -2,7 +2,7 @@ package io.liang.jsidekiq.client.provider.redis;
 
 /**
  * 待实现
- * Created by zhiping on 17/3/28.
+ * Created by zhangyouliang on 17/3/28.
  */
 //public class RedisProvider implements Provider {
 //

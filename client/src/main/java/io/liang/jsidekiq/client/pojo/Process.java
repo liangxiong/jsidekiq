@@ -9,7 +9,7 @@ import io.liang.jsidekiq.client.common.utils.DateUtils;
 import java.util.Date;
 
 /**
- * Created by zhiping on 17/3/26.
+ * Created by zhangyouliang on 17/3/26.
  */
 public class Process {
     private String hostname;

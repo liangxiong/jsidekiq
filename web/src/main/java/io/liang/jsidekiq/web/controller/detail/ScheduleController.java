@@ -30,7 +30,7 @@ public class ScheduleController {
 
         ClientManager client = ClientManager.getInstance();
 
-        List rows = new ArrayList<>();
+        List<QueueStat> rows = new ArrayList<QueueStat>();
 
         QueueStat stat = null;
 
@@ -56,7 +56,7 @@ public class ScheduleController {
 
 
     @RequestMapping("schedule")
-    public ModelAndView queue(String name,Page page){
+    public ModelAndView queue(String name,Page<JSONObject> page){
         ModelAndView mv = new ModelAndView("/detail/schedule/schedule");
 
         ClientManager client = ClientManager.getInstance();

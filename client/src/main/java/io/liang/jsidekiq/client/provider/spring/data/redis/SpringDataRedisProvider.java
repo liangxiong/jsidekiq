@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 待实现
- * Created by zhiping on 17/3/28.
+ * Created by zhangyouliang on 17/3/28.
  */
 public class SpringDataRedisProvider implements Provider {
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -49,24 +49,6 @@ public class SpringDataRedisProvider implements Provider {
 
         increment("stat:failed",quantity);
         increment("stat:failed"+":"+ymd,quantity);
-    }
-
-    public void test() {
-        Long now = System.currentTimeMillis();
-        for (int i = 0; i < 1000; i++) {
-            Date d = new Date(now - (i * 24 * 3600 * 1000L));
-            String ymd = new SimpleDateFormat("yyyy-MM-dd").format(d);
-
-            Long quantity = RandomUtils.nextLong(500,1000);
-
-            increment("stat:processed", quantity);
-            increment("stat:processed" + ":" + ymd, quantity);
-
-            quantity = RandomUtils.nextLong(100,700);
-
-            increment("stat:failed",quantity);
-            increment("stat:failed"+":"+ymd,quantity);
-        }
     }
 
 
@@ -436,7 +418,7 @@ public class SpringDataRedisProvider implements Provider {
      * @param task
      * @return
      */
-    public Set<String> paginatorByZset(final String queueName,Page page){
+    public Set<String> paginatorByZset(final String queueName,Page<JSONObject> page){
         Long count  = zCard(queueName);
         page.setTotalRow(count);
 
@@ -472,7 +454,7 @@ public class SpringDataRedisProvider implements Provider {
      * @param task
      * @return
      */
-    public List<String> paginatorByList(String queueName,Page page){
+    public List<String> paginatorByList(String queueName,Page<JSONObject> page){
         Long count  = listLen(queueName);
         page.setTotalRow(count);
 

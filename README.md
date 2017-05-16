@@ -23,11 +23,13 @@ public Boolean sendMail(String email)
 	- at: 表示延迟多长时间执行
 
 #### 极速感受
-- 安装redis
+- 安装redis 
 - 运行io.liang.jsidekiq.Application
-- dashboard:  http://localhost:8080/jsidekiq/home/index
-- 异步方法模拟： http://127.0.0.1:8080/jsidekiq/dead?name=zyl
-- 账户密码：admin / admin
+- 异步方法模拟： http://127.0.0.1:8080/jsidekiq/demo/asyn?name=zyl
+    - 是不是执行方法返回很快
+    - 后台在给你运行发送邮件
+- dashboard:  http://localhost:8080/jsidekiq/
+    - 账户密码：admin / admin
 
 
 #### 技术栈
@@ -35,24 +37,81 @@ public Boolean sendMail(String email)
 	- spring , spring boot
 	- aop
 	- velocity
+	- fastjson
 
 - redis
 
 #### 正式使用
 - 下载项目maven 编译
-- 生成的client.jar 放入你的项目
+- 生成的client/target/jsidekiq-client-1.0-SNAPSHOT.jar 放入你的项目
 
-- 启动配置
-	- spring boot 参考：application.yml
-		- 根据实际情况修改 jsidekiq:configUrl信息
 
-	-  非spring boot 项目：
-		-  web.xml 配置：io.liang.jsidekiq.client.start.JsidekiqListener 注入参数：configUrl
+- spring boot 参考：application.yml
+    - maven:
+       ```
+       <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-aop</artifactId>
+       </dependency>
+       
+       <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-data-redis</artifactId>
+       </dependency>
+       
+       <dependency>
+         <groupId>io.liang.jsidekiq</groupId>
+         <artifactId>client</artifactId>
+         <version>1.0-SNAPSHOT</version>
+         <scope>system</scope>
+         <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/client-1.0-SNAPSHOT.jar</systemPath>
+       </dependency>
+          
+       ```
 
-	-  jsidekiq:configUrl 参数说明：
+    - SpringBootApplication 增加扫描文件
+    ```
+    @ComponentScan(basePackages={".","io.liang.jsidekiq"})
+    ```
 
-	```
-     configUrl: http://jsidekiq?nameSpace=http://jsidekiq?nameSpace=tvtao::sidekiq&provider=springDataRedis&consumerQueue=queue1,queue2&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=true&adminName=zyl&adminPassword=admin
+    - 在application.yml 中配置 jsidekiq:configUrl 详细请看 jsidekiq:configUrl 参数说明
+
+-  非spring boot 项目：
+    -  web.xml 配置
+    ```
+        <context-param>
+            <param-name>jsidekiq.configUrl</param-name>
+            <param-value>
+                <![CDATA[http://jsidekiq?nameSpace=io::liang::sidekiq&provider=springDataRedis&consumerQueue=demo&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=false&adminName=admin&adminPassword=admin]]>
+            </param-value>
+        </context-param>
+        
+        <listener>
+            <listener-class>io.liang.jsidekiq.client.start.JsidekiqListener</listener-class>
+        </listener>
+    ```
+    
+    - spring xml 配置：
+    ```
+    <context:component-scan base-package="io.liang.jsidekiq" />
+        
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <property name="defaultSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+    </bean>
+    
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    
+    ```
+        
+       
+        
+-  jsidekiq:configUrl 参数说明：
+
+    ```
+    http://jsidekiq?nameSpace=io::liang::sidekiq&provider=springDataRedis&consumerQueue=demo&maxTotal=2&deadMaxJob=90&deadTimeout=60000000&admin=false&adminName=admin&adminPassword=admin
     ```
 
 	- 参数解释：
@@ -68,11 +127,13 @@ public Boolean sendMail(String email)
 
 	- redis 信息配置 最终需要在spring 中提供一个 StringRedisTemplate
 
+
 - 同步方法设置标签标识为异步方法：
 	在方法上增加标签：@JSidekiqLabel(retry = 3,description = "订单监控",queue = "tradeMonit",at=1800000)
 
 
 #### 时序图：
+
 
 ```sequence
 业务方 -> jsidekiq proxy : 调用业务代理类，aop 拦截
@@ -98,7 +159,7 @@ jsidekiq -> 业务方 : ok
 
 
 #### 改进：
-- 耗时任务，在重启过程后 能够不丢失任务，进行重新启动
+- 耗时任务，在重启过程后 能够不丢失任务
 
 #### 资料：
 - 后台  X-admin :  http://x.xuebingsi.com

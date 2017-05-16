@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
- * Created by zhiping on 17/4/5.
+ * Created by zhangyouliang on 17/4/5.
  */
 public class NetUtils {
     private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");

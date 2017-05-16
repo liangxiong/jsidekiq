@@ -32,7 +32,7 @@ public class QueueController {
 
 
     @RequestMapping("queue")
-    private ModelAndView queue(String queue,Page page){
+    private ModelAndView queue(String queue,Page<JSONObject> page){
         ModelAndView mv = new ModelAndView("/detail/queue/queue");
 
         ClientManager client = ClientManager.getInstance();

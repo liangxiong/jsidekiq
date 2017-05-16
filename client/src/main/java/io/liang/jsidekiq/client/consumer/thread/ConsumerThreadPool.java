@@ -9,7 +9,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
- * Created by zhiping on 17/4/16.
+ * Created by zhangyouliang on 17/4/16.
  */
 public class ConsumerThreadPool implements PooledObjectFactory<ConsumerThread> {
     private static GenericObjectPoolConfig config;

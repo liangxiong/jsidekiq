@@ -35,6 +35,10 @@ public class ConsumerThread extends Template implements Runnable {
 
 
     public void close(){
+        //从工作队列中清除掉
+        workes.remove(element);
+
+        //放回线程池
         threadPool.returnObject(this);
     }
 }

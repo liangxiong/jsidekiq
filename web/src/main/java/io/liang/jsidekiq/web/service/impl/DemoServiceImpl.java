@@ -20,6 +20,19 @@ import java.util.Date;
 public class DemoServiceImpl implements DemoService {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @JSidekiqLabel(retry = 3,description = "sleep",queue = "demo")
+    public void sleep(Long time){
+        Long start = System.currentTimeMillis();
+        log.debug("sleep start sleep time:{} ",time);
+
+        try {
+            Thread.sleep(time);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        log.debug("sleep end time:{} ",(System.currentTimeMillis() - start));
+    }
+
     @Override
     public Boolean register(String name) {
         log.debug("第1步：注册用户: "+name+" 成功 持久化到数据库");

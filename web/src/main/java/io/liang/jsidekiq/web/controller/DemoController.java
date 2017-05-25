@@ -18,6 +18,19 @@ public class DemoController {
 
 
     /**
+     * http://127.0.0.1:8080/jsidekiq/demo/sleep?time=10000
+     * 异步队列
+     * @param name
+     * @return
+     */
+    @RequestMapping("/sleep")
+    @ResponseBody
+    private String sleep(@RequestParam("time") final Long time){
+        demoService.sleep(time);
+        return "ok";
+    }
+
+    /**
      * http://127.0.0.1:8080/jsidekiq/demo/asyn?name=zyl
      * 异步队列
      * @param name

@@ -117,22 +117,4 @@ public class ScheduleMain {
         scheduleThread.interrupt();
         retryThread.interrupt();
     }
-
-    public void registerStop(){
-        Thread t = new Thread(new ShutdownHook(), "Jsidekiq Schedule ShutdownHook-Thread");
-        Runtime.getRuntime().addShutdownHook(t);
-    }
-
-    class ShutdownHook implements Runnable{
-        @Override
-        public void run() {
-            log.info("Jsidekiq Schedule stop begin...");
-            Long st = System.currentTimeMillis();
-
-            stop();
-
-            log.info("Jsidekiq Schedule stop begin...  {}",(System.currentTimeMillis() - st));
-        }
-    }
-
 }

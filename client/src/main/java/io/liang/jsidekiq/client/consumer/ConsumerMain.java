@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.liang.jsidekiq.client.consumer.thread.ConsumerThreadPool;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -45,8 +47,6 @@ public class ConsumerMain {
 
         for(;;){
             try {
-//                Element element = clientManager.take();
-
                 ConsumerThread thread = objectPool.borrowObject();
 
                 if(thread != null){
@@ -71,7 +71,6 @@ public class ConsumerMain {
 
     public void stop(){
         fixedThreadPool.shutdown();
-
         this.scheduleMain.stop();
     }
 
@@ -79,7 +78,7 @@ public class ConsumerMain {
         Thread t = new Thread(new ShutdownHook(), "Jsidekiq Consumer ShutdownHook-Thread");
         Runtime.getRuntime().addShutdownHook(t);
 
-        this.scheduleMain.registerStop();
+
     }
 
     class ShutdownHook implements Runnable{
@@ -88,7 +87,20 @@ public class ConsumerMain {
             log.info("Jsidekiq Consumer stop begin...");
             Long st = System.currentTimeMillis();
 
+
+            Set<Element> workes = ConsumerThread.getWorkes();
+
+            log.error("Work still in progress.size: {}", workes.size());
+            if(workes.size() > 0) {
+                log.error("Work still in progress: {}", workes);
+                for (Element element : workes) {
+                    clientManager.push(element);
+                }
+            }
+
             fixedThreadPool.shutdown();
+
+            scheduleMain.stop();
 
             log.info("Jsidekiq Consumer stop begin...  {}",(System.currentTimeMillis() - st));
         }

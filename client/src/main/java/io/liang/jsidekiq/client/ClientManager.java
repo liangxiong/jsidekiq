@@ -475,7 +475,6 @@ public class ClientManager {
 
     public  void regiestShutDown(){
         if(start.compareAndSet(true,false)) {//已经启动
-
             consumer.registerStop();
             heartbeat.registerStop();
         }

@@ -13,6 +13,8 @@ import io.liang.jsidekiq.client.pojo.Element;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by zhangyouliang on 17/4/16.
@@ -25,11 +27,18 @@ public abstract class Template {
 
     protected Element element;
 
+    //正在处理的队列
+    protected final static Set<Element> workes = new HashSet<Element>();
+
     public abstract void excute()throws NoFoundClassOrMethodException,NoSuchMethodException,
     InvocationTargetException,IllegalAccessException, IllegalArgumentException;
 
     public void run(){
         JSidekiqRole.setRoleConsumer();
+        Long threadId = Thread.currentThread().getId();
+
+        log.debug("start threadId:{} work element:{}",threadId,element);
+
 
         String queueName = null;
         Exception exception = null;
@@ -100,7 +109,6 @@ public abstract class Template {
             }
 
             clientManager.push(element);
-
             clientManager.incrementFailed(1L);
         }
     }
@@ -128,5 +136,26 @@ public abstract class Template {
 
     public void setElement(Element element) {
         this.element = element;
+
+        Template.workes.add(this.element);
+    }
+
+
+    public static Set<Element> getWorkes(){
+        return Template.workes;
+    }
+
+
+    public static void main(String[] args) {
+        Element e = new Element();
+
+        System.out.println(e.hashCode());
+
+        Set<Element> workes = new HashSet<Element>();
+
+        workes.add(e);
+        e.setClassName("a");
+        workes.remove(e);
+        System.out.println(workes.size());
     }
 }

@@ -5,6 +5,8 @@ package io.liang.jsidekiq.web.service;
  * Created by zhangyouliang on 17/3/28.
  */
 public interface DemoService {
+    public void sleep(Long time);
+
     public Boolean register(String name);
 
     public Boolean sendAsynMail(String name);

@@ -3,6 +3,10 @@ package io.liang.jsidekiq.client;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.liang.jsidekiq.client.common.utils.NetUtils;
+import io.liang.jsidekiq.client.common.utils.ProcessUtils;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +40,8 @@ public class ClientManager {
 
     private Heartbeat heartbeat; // 心跳
 
+    private String identity;//唯一标识
+
     private static ClientManager instance;
 
 
@@ -45,7 +51,6 @@ public class ClientManager {
         this.consumer = consumer;
 
         this.heartbeat = new Heartbeat(this);
-
         this.consumer.setClientManager(this);
 
     }
@@ -69,6 +74,7 @@ public class ClientManager {
     public volatile AtomicBoolean start = new AtomicBoolean(false);
     public  void start(){
         if(start.compareAndSet(false,true)) {
+            this.identity = NetUtils.getHostName() + ":" + ProcessUtils.pid()+":"+ RandomUtils.nextInt(100000,999999);
             consumer.start();
             heartbeat.start();
         }
@@ -150,7 +156,7 @@ public class ClientManager {
 
 
     //删除进程信息
-    public void removeProcess(String identity) {
+    public void removeProcess() {
         provider.removeProcess(identity);
     }
 
@@ -247,7 +253,7 @@ public class ClientManager {
      * @param timeout
      * @return
      */
-    public boolean push(Element element) {
+    public boolean push(Element element)throws Exception {
         Long now = System.currentTimeMillis();
 
         String scheduleName = null;
@@ -410,22 +416,32 @@ public class ClientManager {
     }
 
 
-    public String decodeElement(Element element){
+    public static void main(String[] args) {
+        ClientManager m = new ClientManager(null,null,null);
+        Element e = new Element();
+//        e.setClassName();
+    }
+
+    public String decodeElement(final Element element)throws Exception{
         if(StringUtils.isBlank(element.getJid())){
             element.setJid(UUID.randomUUID().toString().replace("-",""));
         }
 
         Object[] params = element.getParams();
-        element.setParams(null);
-        for(int i=0;i<params.length;i++){
-            if(params[i] != null) {
-                params[i] = toJSONStr(params[i]);
+
+        JSONObject json = JSONObject.parseObject(toJSONStr(element));
+
+        if(params != null && params.length > 0) {
+            Object[] new_params = new Object[params.length];
+            for (int i = 0; i < params.length; i++) {
+                if (params[i] != null) {
+                    new_params[i] = toJSONStr(params[i]);
+                }
             }
+            json.put("params", new_params);
         }
-        element.setParams(params);
 
-
-        String task = toJSONStr(element);//序列化 优化
+        String task = toJSONStr(json);//序列化 优化
         return task;
     }
 
@@ -461,7 +477,7 @@ public class ClientManager {
     }
 
     //heartbeat进程信息
-    public void heartbeatProcess(String identity) {
+    public void heartbeatProcess() {
         int busy = consumer.busy();
 
         Process process = provider.getProcess(identity);
@@ -477,6 +493,20 @@ public class ClientManager {
         if(start.compareAndSet(true,false)) {//已经启动
             consumer.registerStop();
             heartbeat.registerStop();
+        }
+    }
+
+    //删除已经完成的工作任务
+    public void removWorkers(String threadId) {
+        provider.removWorkers(identity,threadId);
+    }
+
+    //增加正在工作的任务信息
+    public void addWorkers(String threadId, Element element) {
+        try {
+            provider.addWorkers(identity, threadId, decodeElement(element));
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
         }
     }
 

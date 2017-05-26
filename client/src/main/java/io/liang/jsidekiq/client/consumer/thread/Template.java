@@ -34,15 +34,11 @@ public abstract class Template {
     InvocationTargetException,IllegalAccessException, IllegalArgumentException;
 
     public void run(){
-        JSidekiqRole.setRoleConsumer();
-        Long threadId = Thread.currentThread().getId();
-
-        log.debug("start threadId:{} work element:{}",threadId,element);
-
-
         String queueName = null;
         Exception exception = null;
         try {
+            before();
+
             excute();
         }catch (NoFoundClassOrMethodException e) {  //dead
             queueName = Cons.SCHEDULE_DEAD;
@@ -70,13 +66,22 @@ public abstract class Template {
 
             log.error(e.getMessage(),e);
         }finally{
-            clientManager.incrementProcessed(1L);
+            try {
+                clientManager.incrementProcessed(1L);
+                attemptRetry(exception, queueName);
+                close();
+            }catch (Exception e){
+                log.error(e.getMessage(),e);
+            }
 
-            attemptRetry(exception,queueName);
-
-            close();
         }
+    }
 
+    public void before(){
+        JSidekiqRole.setRoleConsumer();
+        Long threadId = Thread.currentThread().getId();
+        clientManager.addWorkers(String.valueOf(threadId),element);
+        log.debug("start threadId:{} work element:{}",threadId,element);
     }
 
     /**
@@ -84,7 +89,7 @@ public abstract class Template {
      * @param e
      * @param queueName  队列名称
      */
-    public void attemptRetry(Exception e,String queueName){
+    public void attemptRetry(Exception e,String queueName)throws Exception{
         if(StringUtils.isNotBlank(queueName)) {
             String errorStack = io.liang.jsidekiq.client.common.utils.StringUtils.getExceptionStack(e);
 

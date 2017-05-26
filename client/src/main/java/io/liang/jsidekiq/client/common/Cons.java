@@ -19,4 +19,6 @@ public class Cons {
     //统计的超时时间
     public static final Long STAT_TTL =  180 * 24 * 60 * 60 * 1000L;
 
+    //正在工作的超时时间
+    public static final Long WORKERS_TTL =  48 * 60 * 60 * 1000L;
 }

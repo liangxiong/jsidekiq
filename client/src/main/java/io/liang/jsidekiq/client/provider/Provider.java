@@ -2,6 +2,7 @@ package io.liang.jsidekiq.client.provider;
 
 
 import com.alibaba.fastjson.JSONObject;
+import io.liang.jsidekiq.client.pojo.Element;
 import io.liang.jsidekiq.client.pojo.stat.RedisInfo;
 import io.liang.jsidekiq.client.pojo.Page;
 import io.liang.jsidekiq.client.pojo.Process;
@@ -69,6 +70,15 @@ public interface Provider {
 
     String get(String key);
 
+    //删除已经完成的工作任务
+    void removWorkers(String identity, String threadId);
+
+    //增加正在工作的任务信息
+    void addWorkers(String identity,String threadId, String element);
+
+    //获取所有正在工作的任务信息
+    public List<Object> getAllWorkers(String identity);
+
 
     /*************************************************************************************
      * 统计信息 逻辑
@@ -88,4 +98,5 @@ public interface Provider {
 
     //进程统计
     List<ProcessStat> getProcessStatList();
+
 }

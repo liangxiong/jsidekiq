@@ -140,6 +140,32 @@ public class SpringDataRedisProvider implements Provider {
         return true;
     }
 
+    //删除已经完成的工作任务
+    public void removWorkers(String identity, String threadId){
+        String workersKey = makePath(identity,"workers");
+        if(threadId != null) {
+            redisTemplate.opsForHash().delete(workersKey, threadId);
+        }else{
+            redisTemplate.delete(workersKey);
+        }
+    }
+
+    //增加正在工作的任务信息
+    public void addWorkers(String identity,String threadId, String element){
+        String workersKey = makePath(identity,"workers");
+        redisTemplate.opsForHash().put(workersKey,threadId,element);
+
+        redisTemplate.expire(workersKey,Cons.WORKERS_TTL, TimeUnit.MILLISECONDS);
+
+    }
+
+    //获取所有正在工作的任务信息
+    public List<Object> getAllWorkers(String identity){
+        String workersKey = makePath(identity,"workers");
+        List<Object> list= redisTemplate.opsForHash().values(workersKey);
+        return list;
+    }
+
 
     //获取所有的队列信息
     @Override
@@ -235,7 +261,6 @@ public class SpringDataRedisProvider implements Provider {
         redisTemplate.execute(new RedisCallback<Boolean>() {
             public Boolean doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                String workersKey = makePath(identity,"workers");
                 String identityKey = makePath(identity);
 
                 connection.openPipeline();
@@ -383,7 +408,7 @@ public class SpringDataRedisProvider implements Provider {
 
                 list.add(processStat);
             }else{
-//                sRem("processes",identity);
+                sRem("processes",identity);
             }
         }
         return list;
@@ -433,7 +458,6 @@ public class SpringDataRedisProvider implements Provider {
                 Set<String> data = new HashSet<String>();
 
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
-
 
                 Set<byte[]>  set = connection.zRevRange(serializer.serialize(makePath(queueName)),starting,ending);
 

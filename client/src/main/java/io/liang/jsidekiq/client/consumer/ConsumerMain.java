@@ -55,7 +55,6 @@ public class ConsumerMain {
                         thread.setElement(element);
 
                         fixedThreadPool.submit(thread);
-
                     }
                 }
             }catch(Exception e){
@@ -63,7 +62,6 @@ public class ConsumerMain {
             }
         }
     }
-
 
     public int busy(){
         return ((ThreadPoolExecutor)fixedThreadPool).getActiveCount();
@@ -77,8 +75,6 @@ public class ConsumerMain {
     public void registerStop(){
         Thread t = new Thread(new ShutdownHook(), "Jsidekiq Consumer ShutdownHook-Thread");
         Runtime.getRuntime().addShutdownHook(t);
-
-
     }
 
     class ShutdownHook implements Runnable{
@@ -87,15 +83,17 @@ public class ConsumerMain {
             log.info("Jsidekiq Consumer stop begin...");
             Long st = System.currentTimeMillis();
 
-
-            Set<Element> workes = ConsumerThread.getWorkes();
-
-            log.error("Work still in progress.size: {}", workes.size());
-            if(workes.size() > 0) {
-                log.error("Work still in progress: {}", workes);
-                for (Element element : workes) {
-                    clientManager.push(element);
+            try {
+                Set<Element> workes = ConsumerThread.getWorkes();
+                log.error("Work still in progress.size: {}", workes.size());
+                if (workes.size() > 0) {
+                    log.error("Work still in progress: {}", workes);
+                    for (Element element : workes) {
+                        clientManager.push(element);
+                    }
                 }
+            }catch (Exception e){
+                log.error(e.getMessage(),e);
             }
 
             fixedThreadPool.shutdown();

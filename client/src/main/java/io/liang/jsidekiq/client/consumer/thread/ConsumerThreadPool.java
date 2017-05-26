@@ -43,6 +43,7 @@ public class ConsumerThreadPool implements PooledObjectFactory<ConsumerThread> {
 
         t.setClientManager(ClientManager.getInstance());
         t.setThreadPool(this);
+        
 
 
         return new DefaultPooledObject<ConsumerThread>(t);

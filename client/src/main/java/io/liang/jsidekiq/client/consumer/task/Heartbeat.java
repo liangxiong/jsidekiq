@@ -1,11 +1,8 @@
 package io.liang.jsidekiq.client.consumer.task;
 
 import io.liang.jsidekiq.client.ClientManager;
-import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.liang.jsidekiq.client.common.utils.ProcessUtils;
-import io.liang.jsidekiq.client.common.utils.NetUtils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,13 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Heartbeat {
     private Logger log = LoggerFactory.getLogger(this.getClass());
-
-    private String identity;
     private ClientManager manager;
     private ScheduledExecutorService pool;
 
     public Heartbeat(ClientManager manager){
-        this.identity = NetUtils.getHostName() + ":" + ProcessUtils.pid()+":"+ RandomUtils.nextInt(100000,999999);
         this.manager = manager;
     }
 
@@ -46,7 +40,7 @@ public class Heartbeat {
 
     public void startHeartbeat(){
         try {
-            manager.heartbeatProcess(identity);
+            manager.heartbeatProcess();
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }
@@ -55,7 +49,7 @@ public class Heartbeat {
     public void stopHeartbeat(){
         try {
             log.info("stopHeartbeat");
-            manager.removeProcess(identity);
+            manager.removeProcess();
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }

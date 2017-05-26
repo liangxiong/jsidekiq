@@ -15,7 +15,6 @@ public class ConsumerThread extends Template implements Runnable {
     public void excute()throws NoFoundClassOrMethodException,NoSuchMethodException,InvocationTargetException,IllegalAccessException, IllegalArgumentException{
         String elementStr = JSON.toJSONStringWithDateFormat(element, "yyyy-MM-dd HH:mm:ss");
 
-
         Object obj = SpringUtil.getBean(element.getClassName());
         if (obj != null) {
             Method method = obj.getClass().getDeclaredMethod(element.getMethodName(), element.getParamTypes());
@@ -37,6 +36,10 @@ public class ConsumerThread extends Template implements Runnable {
     public void close(){
         //从工作队列中清除掉
         workes.remove(element);
+
+        Long threadId = Thread.currentThread().getId();
+        clientManager.removWorkers(String.valueOf(threadId));
+
 
         //放回线程池
         threadPool.returnObject(this);

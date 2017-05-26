@@ -26,6 +26,8 @@ public class DemoController {
     @RequestMapping("/sleep")
     @ResponseBody
     private String sleep(@RequestParam("time") final Long time){
+        demoService.sleep();
+        demoService.sleep("zyl",time.intValue());
         demoService.sleep(time);
         return "ok";
     }

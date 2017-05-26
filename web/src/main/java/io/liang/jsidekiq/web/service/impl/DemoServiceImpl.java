@@ -21,6 +21,36 @@ public class DemoServiceImpl implements DemoService {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @JSidekiqLabel(retry = 3,description = "sleep",queue = "demo")
+    public void sleep(){
+        Long time = 10000L;
+        Long start = System.currentTimeMillis();
+        log.debug("sleep start name:{} sleep time:{} ",time);
+
+        try {
+            Thread.sleep(time);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        log.debug("sleep no param end time:{} ",(System.currentTimeMillis() - start));
+    }
+
+
+    @JSidekiqLabel(retry = 3,description = "sleep",queue = "demo")
+    public void sleep(String name,int time){
+        Long start = System.currentTimeMillis();
+        log.debug("sleep start name:{} sleep time:{} ",name,time);
+
+        try {
+            Thread.sleep(time);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        log.debug("sleep name:{} end time:{} ",name,(System.currentTimeMillis() - start));
+    }
+
+
+
+    @JSidekiqLabel(retry = 3,description = "sleep",queue = "demo")
     public void sleep(Long time){
         Long start = System.currentTimeMillis();
         log.debug("sleep start sleep time:{} ",time);
